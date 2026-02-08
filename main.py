@@ -54,6 +54,7 @@ pipe_height = random.randint(100, 400)
 pipe_speed = 20
 
 score = 0
+passed_pipe = False
 game_over = False
 game_started = False
 
@@ -93,13 +94,17 @@ while running:
         bird_y = bird_y + bird_velocity
         pipe_x = pipe_x - pipe_speed
 
+        if not passed_pipe and (pipe_x + pipe_width) < bird_x:
+            score += 1
+            passed_pipe = True
+
         if pipe_x < -70:
             pipe_x = 400
             pipe_height = random.randint(100, 400)
+            passed_pipe = False
             # TODO 4: Fixing the scoring
             # When you pass through the pipes the score should be updated to the current score + 1. Implement the
             # logic to accomplish this scoring system.
-            score = 1
 
         if bird_y > 600 or bird_y < 0:
             game_over = True
