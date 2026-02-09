@@ -16,7 +16,7 @@ pygame.display.set_caption("Flappy Bird")
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
-PLAYER = (255, 255, 255)
+PLAYER = (255, 220, 0)
 
 # Font Size -->
 big_font = pygame.font.SysFont(None, 80)
@@ -54,6 +54,7 @@ pipe_height = random.randint(100, 400)
 pipe_speed = 5
 
 score = 0
+passed_pipe = False
 game_over = False
 game_started = False
 
@@ -79,6 +80,8 @@ while running:
                     # After the bird crashes with a pipe the when spawning back the player it doesn't appear.
                     # It is your job to find why this is happening! (Hint: What variable stores the y coordinates
                     # of the bird)
+                    bird_x = 50
+                    bird_y = 300
                     bird_velocity = 0
                     pipe_x = 400
                     score = 0
@@ -91,13 +94,17 @@ while running:
         bird_y = bird_y + bird_velocity
         pipe_x = pipe_x - pipe_speed
 
+        if not passed_pipe and (pipe_x + pipe_width) < bird_x:
+            score += 1
+            passed_pipe = True
+
         if pipe_x < -70:
             pipe_x = 400
             pipe_height = random.randint(100, 400)
+            passed_pipe = False
             # TODO 4: Fixing the scoring
             # When you pass through the pipes the score should be updated to the current score + 1. Implement the
             # logic to accomplish this scoring system.
-            score = 1
 
         if bird_y > 600 or bird_y < 0:
             game_over = True
